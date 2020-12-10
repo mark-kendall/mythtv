@@ -4,6 +4,7 @@
 // Qt
 #include <QCoreApplication>
 #include <QPainter>
+#include <QTime>
 
 // MythTV
 #include "mythmainwindow_internal.h"
@@ -299,7 +300,8 @@ void MythOpenGLPainter::DrawImage(const QRect &Dest, MythImage *Image,
 
 void MythOpenGLPainter::DrawProcedural(QRect Dest, int Alpha, ProcSource Source, const QString &SourceHash)
 {
-    if (auto shader = GetProceduralShader(Source, SourceHash); shader && m_render)
+    auto shader = GetProceduralShader(Source, SourceHash);
+    if (shader && m_render)
         m_render->DrawProcedural(Dest, Alpha, nullptr, shader, m_frameTime);
 }
 
@@ -308,7 +310,8 @@ QOpenGLShaderProgram* MythOpenGLPainter::GetProceduralShader(ProcSource Source, 
     if (!m_render)
         return nullptr;
 
-    if (auto program = m_procedurals.find(SourceHash); program != m_procedurals.end())
+    auto program = m_procedurals.find(SourceHash);
+    if (program != m_procedurals.end())
         return *program;
 
     // Temporary hack
