@@ -1159,9 +1159,92 @@
     </window>
 
     <window name="backgroundwindow">
-        <imagetype name="backimg">
-          <filename>ui/background.png</filename>
-        </imagetype>
+        <procedural name="backimg">
+          <area>0,0,100%,100%</area>
+          <source>
+<![CDATA[
+attribute vec2 a_position;
+varying highp float v_alpha;
+varying highp float v_time;
+varying highp vec2  v_pos;
+varying highp vec2  v_res;
+uniform highp mat4  u_projection;
+uniform highp mat4  u_transform;
+uniform highp float u_time;
+uniform highp float u_alpha;
+uniform highp vec2  u_res;
+void main() {
+    v_pos = a_position;
+    gl_Position = u_projection * u_transform * vec4(a_position, 0.0, 1.0);
+    v_alpha = u_alpha;
+    v_time = u_time;
+    v_res  = u_res;
+}
+HACK_HACK
+varying highp float v_alpha;
+varying highp float v_time;
+varying highp vec2  v_pos;
+varying highp vec2  v_res;
+highp float Random(highp vec2 pos) {
+    pos = fract(pos * vec2(123.34, 456.21));
+    pos += dot(pos, pos + 45.32);
+    return fract(pos.x * pos.y);
+}
+
+highp float T(highp float A, highp float Time) {
+    highp float random = Random(vec2(A * 532.43, A * 784.34));
+    highp float interval = clamp(random, 0.3, 0.6);
+    return clamp((sin(Time * A * 1.4 * random) +1.0) / 2.0, 0.0, 1.0);
+}
+
+void main(void) {
+    highp vec2 uv = (v_pos - 0.5 * v_res) / v_res.y;
+    highp vec3 col = vec3(0.0);
+    uv *= .85;
+    // scaling
+    uv.x *= 4.5;
+    uv.y -= .5;
+    highp float time = v_time / 2000.0;
+
+    // bars
+    for(highp float i= 0.0; i < 64.; i = i + 2.0)
+    {
+        // thickness
+        highp float width = 0.08+sin(i)*(sin(time * Random(vec2(i, 654.543)))*.4+.5);
+        highp float edge = 0.01*(sin(time * Random(vec2(i, 654.543)))*.4+.5);
+
+        //bar
+        highp float m1 = smoothstep(width+edge, width, abs((uv.x-3.2+(i/10.))));
+
+        col += m1 * T(2.+(i*.02), time);
+        col += m1*.1;
+
+        //float m2 = smoothstep(width/10.+edge/10., width/10., abs((uv.y-.2+(i/20.))));
+        //col -= m2*.1;
+    }
+    //col = clamp(col, 0., 2.);
+
+    // colors
+    col.r -= T(.2, time)*1.5;
+    col.g -= T(.6, time)*1.5;
+    col.b -= T(1.4, time)*1.5;
+
+    col.rgb += T(uv.x, time)*.03;
+
+    col -= vec3(.4);
+
+    // vignette
+    col *= smoothstep(-.95, .0, uv.y);
+    col *= smoothstep(0., -.95, uv.y);
+    col *= smoothstep(-5., 1., uv.x);
+    col *= smoothstep(5., -1., uv.x);
+    col += col*2.;
+
+    gl_FragColor = vec4(col, 1.0);
+};
+]]>
+          </source>
+        </procedural>
 
         <fontdef name="medium" face="Droid Sans">
             <color>#FFFFFF</color>

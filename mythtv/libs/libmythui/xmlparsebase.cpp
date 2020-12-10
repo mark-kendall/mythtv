@@ -26,6 +26,7 @@
 /* ui type includes */
 #include "mythscreentype.h"
 #include "mythuiimage.h"
+#include "mythuiprocedural.h"
 #include "mythuitext.h"
 #include "mythuitextedit.h"
 #include "mythuiclock.h"
@@ -391,6 +392,7 @@ void XMLParseBase::ParseChildren(const QString &filename,
                 delete font;
             }
             else if (type == "imagetype" ||
+                     type == "procedural" ||
                      type == "textarea" ||
                      type == "group" ||
                      type == "textedit" ||
@@ -481,6 +483,8 @@ MythUIType *XMLParseBase::ParseUIType(
 
     if (type == "imagetype")
         uitype = new MythUIImage(parent, name);
+    else if (type == "procedural")
+        uitype = new MythUIProcedural(parent, name);
     else if (type == "textarea")
         uitype = new MythUIText(parent, name);
     else if (type == "group")
@@ -595,6 +599,7 @@ MythUIType *XMLParseBase::ParseUIType(
                 delete font;
             }
             else if (info.tagName() == "imagetype" ||
+                     info.tagName() == "procedural" ||
                      info.tagName() == "textarea" ||
                      info.tagName() == "group" ||
                      info.tagName() == "textedit" ||
@@ -790,6 +795,7 @@ bool XMLParseBase::doLoad(const QString &windowname,
                     delete font;
                 }
                 else if (type == "imagetype" ||
+                         type == "procedural" ||
                          type == "textarea" ||
                          type == "group" ||
                          type == "textedit" ||

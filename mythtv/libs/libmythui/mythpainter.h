@@ -28,6 +28,7 @@ class UIEffects;
 
 using LayoutVector = QVector<QTextLayout *>;
 using FormatVector = QVector<QTextLayout::FormatRange>;
+using ProcSource = std::shared_ptr<QByteArray>;
 
 class MUI_PUBLIC MythPainter : public QObject
 {
@@ -63,6 +64,8 @@ class MUI_PUBLIC MythPainter : public QObject
 
     void DrawImage(int x, int y, MythImage *im, int alpha);
     void DrawImage(const QPoint &topLeft, MythImage *im, int alph);
+    virtual void DrawProcedural(QRect /*Area*/, int /*Alpha*/, ProcSource /*Source*/,
+                        const QString& /*SourceHash*/) { }
 
     virtual void DrawText(const QRect &r, const QString &msg, int flags,
                           const MythFontProperties &font, int alpha,
@@ -130,6 +133,7 @@ class MUI_PUBLIC MythPainter : public QObject
     QPaintDevice *m_parent      {nullptr};
     int m_hardwareCacheSize     {0};
     int m_maxHardwareCacheSize  {0};
+    float m_frameTime { 0 };
 
   private:
     int64_t m_softwareCacheSize {0};

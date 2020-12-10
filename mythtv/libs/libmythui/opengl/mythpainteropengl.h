@@ -18,6 +18,7 @@ class MythGLTexture;
 class MythRenderOpenGL;
 class QOpenGLBuffer;
 class QOpenGLFramebufferObject;
+class QOpenGLShaderProgram;
 
 #define MAX_BUFFER_POOL 70
 
@@ -52,6 +53,7 @@ class MUI_PUBLIC MythOpenGLPainter : public MythPainter
     void DrawImage(const QRect &Dest, MythImage *Image, const QRect &Source, int Alpha) override;
     void DrawRect(const QRect &Area, const QBrush &FillBrush,
                   const QPen &LinePen, int Alpha) override;
+    void DrawProcedural(QRect Dest, int Alpha, ProcSource Source, const QString& SourceHash) override;
     void DrawRoundRect(const QRect &Area, int CornerRadius,
                        const QBrush &FillBrush, const QPen &LinePen, int Alpha) override;
     void PushTransformation(const UIEffects &Fx, QPointF Center = QPointF()) override;
@@ -63,6 +65,7 @@ class MUI_PUBLIC MythOpenGLPainter : public MythPainter
   protected:
     void  ClearCache(void);
     MythGLTexture* GetTextureFromCache(MythImage *Image);
+    QOpenGLShaderProgram* GetProceduralShader(ProcSource Source, const QString& SourceHash);
 
     // MythPainter
     MythImage* GetFormatImagePriv(void) override { return new MythImage(this); }
@@ -87,6 +90,8 @@ class MUI_PUBLIC MythOpenGLPainter : public MythPainter
     QOpenGLBuffer*             m_mappedBufferPool[MAX_BUFFER_POOL] { nullptr };
     int                        m_mappedBufferPoolIdx { 0 };
     bool                       m_mappedBufferPoolReady { false };
+
+    QHash<QString,QOpenGLShaderProgram*> m_procedurals;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MythOpenGLPainter::ViewControls)
