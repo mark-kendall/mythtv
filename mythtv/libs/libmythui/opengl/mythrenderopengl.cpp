@@ -977,7 +977,7 @@ void MythRenderOpenGL::DrawRect(QOpenGLFramebufferObject *Target,
                                 const QRect Area, const QBrush &FillBrush,
                                 const QPen &LinePen, int Alpha)
 {
-    DrawRoundRect(Target, Area, 0, FillBrush, LinePen, Alpha);
+    DrawRoundRect(Target, Area, 1, FillBrush, LinePen, Alpha);
 }
 
 
@@ -1008,6 +1008,7 @@ void MythRenderOpenGL::DrawRoundRect(QOpenGLFramebufferObject *Target,
     float halfwidth = Area.width() / 2.0F;
     float halfheight = Area.height() / 2.0F;
     float radius = CornerRadius;
+    if (radius < 1.0F) radius = 1.0F;
     if (radius > halfwidth) radius = halfwidth;
     if (radius > halfheight) radius = halfheight;
     float innerradius = radius - LinePen.width();
