@@ -167,7 +167,7 @@ class MUI_PUBLIC MythRenderOpenGL : public QOpenGLContext, public QOpenGLFunctio
     void  DrawProcedural(QRect Area, int Alpha, QOpenGLFramebufferObject* Target,
                          QOpenGLShaderProgram* Program, float Time);
 
-    bool  GetGPUMemory(int &Available, int& Dedicated, int &Total);
+    std::tuple<int,int,int> GetGPUMemory();
 
   public slots:
     void  MessageLogged  (const QOpenGLDebugMessage &Message);
