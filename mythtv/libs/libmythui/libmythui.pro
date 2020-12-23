@@ -217,14 +217,14 @@ cygwin:DEFINES += _WIN32
 mingw :DEFINES += USING_MINGW
 
 mingw | win32-msvc*{
-    HEADERS += mythpainter_d3d9.h   mythrender_d3d9.h
-    SOURCES += mythpainter_d3d9.cpp mythrender_d3d9.cpp
+    #HEADERS += mythpainter_d3d9.h   mythrender_d3d9.h
+    #SOURCES += mythpainter_d3d9.cpp mythrender_d3d9.cpp
     HEADERS += platforms/mythdisplaywindows.h
     SOURCES += platforms/mythdisplaywindows.cpp
     DEFINES += NODRAWTEXT
     LIBS    += -lGdi32 -lUser32
 
-    using_dxva2: DEFINES += USING_DXVA2
+    #using_dxva2: DEFINES += USING_DXVA2
 }
 
 using_vulkan {
