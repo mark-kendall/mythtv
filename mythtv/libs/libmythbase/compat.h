@@ -51,8 +51,13 @@
 #endif
 
 #ifdef _WIN32
+#ifdef __cplusplus
 #    include <cstdlib>       // for rand()
 #    include <ctime>
+#else
+#    include <stdlib.h>       // for rand()
+#    include <time.h>
+#endif
 #    include <sys/time.h>
 #    include <sys/types.h>    // suseconds_t
 #endif
@@ -138,7 +143,11 @@
 //used in videodevice only - that code is not windows-compatible anyway
 #    define minor(X) 0
 
+#ifdef __cplusplus
     using uint = unsigned int;
+#else
+    typedef unsigned int uint;
+#endif
 #endif
 
 #if defined(__cplusplus) && defined(_WIN32)
@@ -158,9 +167,16 @@
 #   define setenv(x, y, z) ::SetEnvironmentVariableA(x, y)
 #   define unsetenv(x) 0
 
+#   ifdef __MINGW32__
+#   include <unistd.h>
+#   endif
     inline unsigned sleep(unsigned int x)
     {
+#       ifdef __MINGW32__
+        usleep(x * 1000000);
+#       else
         Sleep(x * 1000);
+#       endif
         return 0;
     }
 
@@ -214,6 +230,7 @@
     //signals: not tested
 #    define SIGHUP  1
 #    define SIGQUIT 3
+#    define SIGTRAP 5
 #    define SIGKILL 9
 #    define SIGUSR1 10  // used to force UPnP mediamap rebuild in the backend
 #    define SIGUSR2 12  // used to restart LIRC as required
@@ -225,6 +242,10 @@
 #    define S_IRGRP 0
 #    define S_IROTH 0
 #    define O_SYNC 0
+
+#ifndef EWOULDBLOCK
+#define EWOULDBLOCK EAGAIN
+#endif
 
     #define mkfifo(path, mode) \
         (int)CreateNamedPipeA(path, PIPE_ACCESS_DUPLEX | WRITE_DAC, \
@@ -278,7 +299,11 @@ static __inline struct tm *gmtime_r(const time_t *timep, struct tm *result)
         *result = *tmp;
         return result;
     }
+#ifdef __cplusplus
     return nullptr;
+#else
+    return NULL;
+#endif
 }
 #endif
 
@@ -294,7 +319,11 @@ static __inline struct tm *localtime_r(const time_t *timep, struct tm *result)
         memcpy(result, win_tmp, sizeof(struct tm));
         return result;
     }
+#ifdef __cplusplus
     return nullptr;
+#else
+    return NULL;
+#endif
 }
 #endif
 
@@ -330,7 +359,11 @@ static __inline struct tm *localtime_r(const time_t *timep, struct tm *result)
 #    define WEXITSTATUS(w) (((w) >> 8) & 0xff)
 #    define WTERMSIG(w)    ((w) & 0x7f)
 
+#ifdef __cplusplus
     using suseconds_t = long;
+#else
+    typedef long suseconds_t;
+#endif
 
 #endif // _WIN32
 
@@ -363,9 +396,15 @@ static __inline struct tm *localtime_r(const time_t *timep, struct tm *result)
 #endif
 
 #if defined(USING_MINGW) && defined(FILENAME_MAX)
+#ifdef __cplusplus
 #    include <cerrno>
 #    include <cstddef>
 #    include <cstring>
+#else
+#    include <errno.h>
+#    include <stddef.h>
+#    include <string.h>
+#endif
 #    include <dirent.h>
     static inline int readdir_r(
         DIR *dirp, struct dirent *entry, struct dirent **result)
@@ -385,7 +424,11 @@ static __inline struct tm *localtime_r(const time_t *timep, struct tm *result)
         else
         {
             if (result)
+#ifdef __cplusplus
                 *result = nullptr;
+#else
+                *result = NULL;
+#endif
             return errno;
         }
     }
