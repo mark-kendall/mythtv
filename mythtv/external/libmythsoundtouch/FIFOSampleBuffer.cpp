@@ -171,7 +171,7 @@ void FIFOSampleBuffer::ensureCapacity(uint capacityRequirement)
         {
             throw std::runtime_error("Couldn't allocate memory!\n");
         }
-        temp = (SAMPLETYPE *)(((ulong)tempUnaligned + 15) & -16);
+        temp = (SAMPLETYPE *)(((intptr_t)tempUnaligned + 15) & -16);
         memcpy(temp, ptrBegin(), samplesInBuffer * channels * sizeof(SAMPLETYPE));
         delete[] bufferUnaligned;
         buffer = temp;

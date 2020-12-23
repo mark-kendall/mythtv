@@ -45,7 +45,7 @@
 #include <stdlib.h>
 #include <memory.h>
 #include <limits.h>
-#include <math.h>
+#include <cmath>
 #include <assert.h>
 
 #include "STTypes.h"
@@ -782,7 +782,7 @@ void TDStretch::acceptNewOverlapLength(uint newOverlapLength)
 
         pRefMidBufferUnaligned = new SAMPLETYPE[midBufferLength + 16 / sizeof(SAMPLETYPE)];
         // ensure that 'pRefMidBuffer' is aligned to 16 byte boundary for efficiency
-        pRefMidBuffer = (SAMPLETYPE *)((((ulong)pRefMidBufferUnaligned) + 15) & -16);
+        pRefMidBuffer = (SAMPLETYPE *)((((intptr_t)pRefMidBufferUnaligned) + 15) & -16);
     }
 }
 

@@ -42,7 +42,7 @@
 
 #include <memory.h>
 #include <assert.h>
-#include <math.h>
+#include <cmath>
 #include <stdlib.h>
 #include "AAFilter.h"
 #include "FIRFilter.h"

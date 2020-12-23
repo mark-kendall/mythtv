@@ -72,7 +72,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <memory.h>
-#include <math.h>
+#include <cmath>
 #include <stdexcept>
 #include <stdio.h>
 

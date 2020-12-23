@@ -220,7 +220,7 @@ void TDStretchSSE2::overlapMulti(float *output, const float *input) const
             "sub        $1,     %%ecx       \n\t"
             "jnz        1b                  \n\t"
             :
-            :"c"(overlapLength),"r"(i),"r"(m),"r"(o),"r"((long)channels)
+            :"c"(overlapLength),"r"(i),"r"(m),"r"(o),"r"((intptr_t)channels)
         );
     else
         __asm__ volatile (
@@ -258,7 +258,7 @@ void TDStretchSSE2::overlapMulti(float *output, const float *input) const
             "sub        $1,     %%ecx       \n\t"
             "jnz        1b                  \n\t"
             :
-            :"c"(overlapLength),"r"(i),"r"(m),"r"(o),"r"((long)channels)
+            :"c"(overlapLength),"r"(i),"r"(m),"r"(o),"r"((intptr_t)channels)
         );
 }
 
@@ -325,7 +325,7 @@ void FIRFilterSSE2::setCoefficients(const float *coeffs, uint newLen, uint uRDF)
     // Ensure that filter coeffs array is aligned to 16-byte boundary
     delete[] filterCoeffsUnalign;
     filterCoeffsUnalign = new float[2 * newLen + 16];
-    filterCoeffsAlign = (float *)(((ulong)filterCoeffsUnalign + 15) & -16);
+    filterCoeffsAlign = (float *)(((intptr_t)filterCoeffsUnalign + 15) & -16);
 
     float fdiv = (float)resultDivider;
 
