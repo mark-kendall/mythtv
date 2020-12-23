@@ -47,6 +47,7 @@
 #include <limits.h>
 #include <cmath>
 #include <assert.h>
+#include <stdexcept>
 
 #include "STTypes.h"
 #include "cpu_detect.h"
