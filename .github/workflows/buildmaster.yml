@@ -91,7 +91,7 @@ jobs:
       run: make -j4
 
   buildwin:
-    name: build windows
+    name: Build windows
     runs-on: windows-latest
 
     defaults:
