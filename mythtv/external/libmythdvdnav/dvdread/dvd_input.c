@@ -49,12 +49,12 @@ int         (*dvdinput_read)  (dvd_input_t, void *, int, int);
 #else
 
 /* dlopening libdvdcss */
-# if defined(HAVE_DLFCN_H) && !defined(USING_BUILTIN_DLFCN)
+# if HAVE_DLFCN_H && !defined(USING_BUILTIN_DLFCN)
 #  include <dlfcn.h>
 # else
 #   if defined(WIN32)
 /* Only needed on MINGW at the moment */
-#    include "../msvc/contrib/dlfcn.c"
+//#    include "../msvc/contrib/dlfcn.c"
 #   endif
 # endif
 
