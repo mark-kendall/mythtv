@@ -61,10 +61,10 @@
 #define EXV_HAVE_STRINGS_H
 
 // Define if you have the mmap function.
-//#define EXV_HAVE_MMAP
+#define EXV_HAVE_MMAP
 
 // Define if you have the munmap function.
-//#define EXV_HAVE_MUNMAP
+#define EXV_HAVE_MUNMAP
 
 // Define if you have <sys/stat.h> header file.
 #define EXV_HAVE_SYS_STAT_H
