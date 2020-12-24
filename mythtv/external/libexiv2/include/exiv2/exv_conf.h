@@ -76,7 +76,7 @@
 #define EXV_HAVE_UNISTD_H
 
 // Define if you have the <sys/mman.h> header file.
-#define EXV_HAVE_SYS_MMAN_H
+//#define EXV_HAVE_SYS_MMAN_H
 
 // Define if you have are using the zlib library.
 #define EXV_HAVE_LIBZ
