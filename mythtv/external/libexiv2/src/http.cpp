@@ -22,7 +22,7 @@
  * http.cpp
  */
 
-#ifdef _MSC_VER
+#if defined(WIN32) || defined(_MSC_VER) || defined(__MINGW__)
 #include <winsock2.h>
 #pragma comment(lib, "ws2_32.lib")
 #endif
